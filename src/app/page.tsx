@@ -37,32 +37,30 @@ export default function Home() {
   };
 
   //DELETE FETCH DONE
-  async function deleteMovie() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PUBLIC_URL}/delete`, {
+  async function deleteMovie(id:number) {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_PUBLIC_URL}/delete/${id}`, {
       method: "DELETE",
       headers: {
-        Accept: "appliacation.json",
+        Accept: "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        name,
-      }),
     });
     const data = await res.json();
     setMovie(data);
-  }
+  };
 
   useEffect(() => {
     getMovies();
-    console.log(movies);
+  
   }, []);
- 
+
   return (
    <div>
-    <div className="w-[300px]">
-      <div className="flex gap-1">
+    <div className="m-10 w-[300px] bg-gray-100 text-gray-900 rounded border border-purple-200 ">
+
+      <div className="flex gap-1 justify-center">
         <input 
-          className="border border-blue-400 rounded pl-1"
+          className="border border-purple-200 rounded pl-1  text-gray-900  mt-3"
           onChange={(e)=>{
             setName(e.target.value);
             console.log(name); 
@@ -70,23 +68,22 @@ export default function Home() {
         />
         <button onClick={()=>{
           addMovie();
-        }} className="border rounded w-[90px] bg-blue-300 border-blue-400">Movie Add</button>
+        }} className="border rounded w-[90px] bg-purple-100 border-purple-200  text-gray-900  mt-3">Movie Add</button>
       </div>
 
-      <div className="">
-       {movies.map((movie)=>(
-         <div key={movie.id} className="flex justify-between">
-          <div>{movie.name}</div> 
-          <div>
-          <button className="border rounded">Edit</button>
-          <button onClick={()=>{
-            deleteMovie();
-          }} className=" border rounded">Delete</button>
-          </div>
+      <div className="px-4 flex flex-col justify-center mt-3">
+        {movies.map((movie)=>(
+        <div key={movie.id} className="flex justify-between mt-2">
+          <div>{movie.name}</div>
 
+          <div className="flex gap-2">
+            <button className="border rounded  bg-purple-100 border-purple-200  text-gray-900 ">Edit</button>
+            <button onClick={()=>{
+              deleteMovie(movie.id);
+            }} className=" border rounded  bg-purple-100 border-purple-200  text-gray-900 ">Delete</button>
+          </div>
         </div>
-        ) 
-       )}
+        ))}
       </div>
     </div>
 
